@@ -1,0 +1,22 @@
+PATH
+  remote: .
+  specs:
+    librevox (0.9)
+      eventmachine (~> 1.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    bacon (1.2.0)
+    eventmachine (1.0.6)
+    rake (10.4.2)
+    rr (1.1.2)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bacon (~> 1.1)
+  librevox!
+  rake
+  rr (~> 1.0)

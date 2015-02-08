@@ -6,25 +6,26 @@ module Librevox
     class Outbound < Base
       include Librevox::Applications
 
-      def application app, args=nil, params={}, &block
+      def application(app, args = nil, params = {}, &block)
         msg = "sendmsg\n"
         msg << "call-command: execute\n"
         msg << "execute-app-name: #{app}\n"
         msg << "execute-app-arg: #{args}\n" if args && !args.empty?
 
-        send_data "#{msg}\n"
+        send_data("#{msg}\n")
 
-        @application_queue.push(proc {
+        callback_proc = proc do
           update_session do
             arg = params[:variable] ? variable(params[:variable]) : nil
             block.call(arg) if block
           end
-        })
+        end
+        @application_queue.push(callback_proc)
       end
 
       # This should probably be in Application#sendmsg instead.
-      def sendmsg msg 
-        send_data "sendmsg\n%s" % msg
+      def sendmsg(msg)
+        send_data("sendmsg\n%s" % msg)
       end
 
       attr_accessor :session
@@ -38,11 +39,11 @@ module Librevox
         @session = nil
         @application_queue = []
 
-        send_data "connect\n\n"
-        send_data "myevents\n\n"
+        send_data("connect\n\n")
+        send_data("myevents\n\n")
         @application_queue << proc {}
-        send_data "linger\n\n"
-        @application_queue << proc {session_initiated}
+        send_data("linger\n\n")
+        @application_queue << proc { session_initiated }
       end
 
       def handle_response
@@ -57,12 +58,12 @@ module Librevox
         super
       end
 
-      def variable name
+      def variable(name)
         session[:"variable_#{name}"]
       end
 
-      def update_session &block
-        api.command "uuid_dump", session[:unique_id], &block
+      def update_session(&block)
+        api.command("uuid_dump", session[:unique_id], &block)
       end
     end
   end

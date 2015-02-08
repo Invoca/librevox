@@ -7,22 +7,24 @@ module Librevox
   class CommandSocket
     include Librevox::Commands
 
-    def initialize args={}
-      @server   = args[:server] || "127.0.0.1"
-      @port     = args[:port] || "8021"
-      @auth     = args[:auth] || "ClueCon"
+    def initialize(args = {})
+      @server = args[:server] || "127.0.0.1"
+      @port   = args[:port]   || "8021"
+      @auth   = args[:auth]   || "ClueCon"
 
-      connect unless args[:connect] == false
+      if args[:connect].nil? || args[:connect]
+        connect
+      end
     end
 
     def connect
       @socket = TCPSocket.open(@server, @port)
-      @socket.print "auth #{@auth}\n\n"
+      @socket.print("auth #{@auth}\n\n")
       read_response
     end
 
     def command *args
-      @socket.print "#{super(*args)}\n\n"
+      @socket.print("#{super(*args)}\n\n")
       read_response
     end
 

@@ -7,10 +7,10 @@ module Librevox
     class Base < EventMachine::Protocols::HeaderAndContentProtocol
       class << self
         def hooks
-          @hooks ||= Hash.new {|hash, key| hash[key] = []}
+          @hooks ||= Hash.new { |hash, key| hash[key] = [] }
         end
 
-        def event event, &block
+        def event(event, &block)
           hooks[event] << block
         end
       end
@@ -22,12 +22,12 @@ module Librevox
       class CommandDelegate
         include Librevox::Commands
 
-        def initialize listener
+        def initialize(listener)
           @listener = listener
         end
 
-        def command *args, &block
-          @listener.command super(*args), &block
+        def command(*args, &block)
+          @listener.command(super(*args), &block)
         end
       end
 
@@ -41,8 +41,8 @@ module Librevox
         @command_delegate ||= CommandDelegate.new(self)
       end
 
-      def command msg, &block
-        send_data "#{msg}\n\n"
+      def command(msg, &block)
+        send_data("#{msg}\n\n")
 
         @command_queue.push(block)
       end
@@ -54,7 +54,7 @@ module Librevox
         @command_queue = []
       end
 
-      def receive_request header, content
+      def receive_request(header, content)
         @response = Librevox::Response.new(header, content)
         handle_response
       end
@@ -71,7 +71,7 @@ module Librevox
       end
 
       # override
-      def on_event event
+      def on_event(event)
       end
 
       alias :done :close_connection_after_writing
@@ -79,9 +79,9 @@ module Librevox
       private
       def invoke_event_hooks
         event = response.event.downcase.to_sym
-        self.class.hooks[event].each {|block|
+        self.class.hooks[event].each do |block|
           instance_exec(response.dup, &block)
-        }
+        end
       end
     end
   end

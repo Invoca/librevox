@@ -17,7 +17,7 @@ module Librevox
     @logger ||= logger!
   end
 
-  def self.logger= logger
+  def self.logger=(logger)
     @logger = logger
   end
 
@@ -42,32 +42,31 @@ module Librevox
   #     run SomeListener
   #     run OtherListner
   #   end
-  def self.start klass=nil, args={}, &block
-    logger.info "Starting Librevox"
+  def self.start(klass = nil, args = {}, &block)
+    logger.info("Starting Librevox")
 
     EM.run do
-      trap("TERM") {stop}
-      trap("INT") {stop}
-      trap("HUP") {reopen_log}
-
+      trap("TERM") { stop }
+      trap("INT")  { stop }
+      trap("HUP")  { reopen_log }
       block_given? ? instance_eval(&block) : run(klass, args)
     end
   end
 
-  def self.run klass, args={}
+  def self.run(klass, args = {})
     args[:host] ||= "localhost"
 
-    if klass.ancestors.include? Librevox::Listener::Inbound
+    if klass.ancestors.include?(Librevox::Listener::Inbound)
       args[:port] ||= 8021
-      EM.connect args[:host], args[:port], klass, args
-    elsif klass.ancestors.include? Librevox::Listener::Outbound
+      EM.connect(args[:host], args[:port], klass, args)
+    elsif klass.ancestors.include?(Librevox::Listener::Outbound)
       args[:port] ||= 8084
-      EM.start_server args[:host], args[:port], klass, args
+      EM.start_server(args[:host], args[:port], klass, args)
     end
   end
 
   def self.stop
-    logger.info "Terminating Librevox"
+    logger.info("Terminating Librevox")
     EM.stop
   end
 end

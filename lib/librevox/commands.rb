@@ -10,13 +10,13 @@ module Librevox
     # @example
     #   socket.command "fsctl", "hupall normal_clearing"
     # @see http://wiki.freeswitch.org/wiki/Mod_commands
-    def command name, args=""
+    def command(name, args = "")
       msg = "api #{name}"
       msg << " #{args}" if args && !args.empty?
       msg
     end
 
-    def status &block
+    def status( &block)
       command "status", &block
     end
 
@@ -25,7 +25,7 @@ module Librevox
     #   socket.hash :insert, :realm, :key, "value"
     #   socket.hash :select, :realm, :key
     #   socket.hash :delete, :realm, :key
-    def hash *args, &block
+    def hash(*args, &block)
       command "hash", args.join("/"), &block
     end
 
@@ -34,7 +34,7 @@ module Librevox
     #   socket.originate 'sofia/user/coltrane', :extension => "1234"
     # @example With :dialplan and :context
     # @see http://wiki.freeswitch.org/wiki/Mod_commands#originate
-    def originate url, args={}, &block
+    def originate(url, args = {}, &block)
       extension = args.delete(:extension)
       dialplan  = args.delete(:dialplan)
       context   = args.delete(:context)
@@ -50,11 +50,11 @@ module Librevox
     # @example
     #   socket.fsctl :hupall, :normal_clearing
     # @see http://wiki.freeswitch.org/wiki/Mod_commands#fsctl
-    def fsctl *args, &block
+    def fsctl(*args, &block)
       command "fsctl", args.join(" "), &block
     end
 
-    def hupall cause=nil, &block
+    def hupall(cause = nil, &block)
       command "hupall", cause, &block
     end
 
@@ -62,7 +62,7 @@ module Librevox
     # @example
     #   socket.uuid_park "592567a2-1be4-11df-a036-19bfdab2092f"
     # @see http://wiki.freeswitch.org/wiki/Mod_commands#uuid_park
-    def uuid_park uuid, &block
+    def uuid_park(uuid, &block)
       command "uuid_park", uuid, &block
     end
 
@@ -70,7 +70,7 @@ module Librevox
     # @example
     #   socket.uuid_bridge "592567a2-1be4-11df-a036-19bfdab2092f", "58b39c3a-1be4-11df-a035-19bfdab2092f"
     # @see http://wiki.freeswitch.org/wiki/Mod_commands#uuid_bridge
-    def uuid_bridge uuid1, uuid2, &block
+    def uuid_bridge(uuid1, uuid2, &block)
       command "uuid_bridge", "#{uuid1} #{uuid2}", &block
     end
   end

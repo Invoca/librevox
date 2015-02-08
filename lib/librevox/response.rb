@@ -9,23 +9,23 @@ module Librevox
   class Response
     attr_accessor :headers, :content
 
-    def initialize headers="", content=""
+    def initialize(headers = "", content = "")
       self.headers = headers
       self.content = content
     end
 
-    def headers= headers
+    def headers=(headers)
       @headers = headers_2_hash(headers)
       @headers.each {|k,v| v.chomp! if v.is_a?(String)}
     end
 
-    def content= content
+    def content=(content)
       @content = if content.respond_to?(:match) && content.match(/:/)
-                   headers_2_hash(content).merge(:body => content.split("\n\n", 2)[1].to_s)
+                   headers_2_hash(content).merge(body: content.split("\n\n", 2)[1].to_s)
                  else
                    content
                  end
-      @content.each {|k,v| v.chomp! if v.is_a?(String)}
+      @content.each { |_,v| v.chomp! if v.is_a?(String) }
     end
 
     def event?
@@ -46,7 +46,7 @@ module Librevox
 
     private
     def headers_2_hash *args
-      EM::Protocols::HeaderAndContentProtocol.headers_2_hash *args
+      EM::Protocols::HeaderAndContentProtocol.headers_2_hash(*args)
     end
   end
 end
