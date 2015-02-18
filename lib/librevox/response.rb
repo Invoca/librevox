@@ -36,6 +36,10 @@ module Librevox
       @content[:event_name] if event?
     end
 
+    def uuid
+      @content[:variable_uuid]
+    end
+
     def api_response?
       @headers[:content_type] == "api/response"
     end
