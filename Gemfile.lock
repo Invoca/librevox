@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     librevox (0.10)
-      em-synchrony (~> 1.0)
+      em-synchrony (= 1.0.3)
 
 GEM
   remote: https://rubygems.org/
