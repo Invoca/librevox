@@ -1,14 +1,16 @@
 PATH
   remote: .
   specs:
-    librevox (0.9)
-      eventmachine (~> 1.0)
+    librevox (0.10)
+      em-synchrony (= 1.0.3)
 
 GEM
   remote: https://rubygems.org/
   specs:
     bacon (1.2.0)
-    eventmachine (1.0.6)
+    em-synchrony (1.0.3)
+      eventmachine (>= 1.0.0.beta.1)
+    eventmachine (1.0.7)
     rake (10.4.2)
     rr (1.1.2)
 

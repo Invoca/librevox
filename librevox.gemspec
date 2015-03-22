@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name     = "librevox"
-  s.version  = "0.9"
+  s.version  = "0.10"
   s.date     = "2014-04-03"
   s.summary  = "Ruby library for interacting with FreeSWITCH."
   s.email    = "harry@vangberg.name"
@@ -33,5 +33,5 @@ open source telephony platform FreeSwitch."
     "spec/librevox/listener/spec_inbound.rb",
     "spec/librevox/listener/spec_outbound.rb"
   ]
-  s.add_dependency "eventmachine", "~> 1.0"
+  s.add_dependency "em-synchrony", "1.0.3"
 end

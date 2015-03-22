@@ -1,4 +1,4 @@
-require 'eventmachine'
+require 'em-synchrony'
 require 'em/protocols/header_and_content'
 
 class String

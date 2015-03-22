@@ -1,6 +1,6 @@
 require 'logger'
 require 'fiber'
-require 'eventmachine'
+require 'em-synchrony'
 require 'librevox/listener/inbound'
 require 'librevox/listener/outbound'
 require 'librevox/command_socket'
@@ -45,7 +45,7 @@ module Librevox
   def self.start(klass = nil, args = {}, &block)
     logger.info("Starting Librevox")
 
-    EM.run do
+    EM.synchrony do
       trap("TERM") { stop }
       trap("INT")  { stop }
       trap("HUP")  { reopen_log }

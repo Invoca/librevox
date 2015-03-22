@@ -1,4 +1,4 @@
-require 'eventmachine'
+require 'em-synchrony'
 require 'librevox/response'
 require 'librevox/commands'
 
